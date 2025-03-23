@@ -172,16 +172,15 @@ function Get-RandomHex {
 function New-StandardMachineId {
     $template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
     $result = $template -replace '[xy]', {
-        param($match)
-        $r = [Random]::new().Next(16)
-        $v = if ($match.Value -eq "x") { $r } else { ($r -band 0x3) -bor 0x8 }
-        return $v.ToString("x")
+        $r = Get-Random -Minimum 0 -Maximum 16
+        if ($args[0].Value -eq "x") { $r.ToString("x") } else { (($r -band 0x3) -bor 0x8).ToString("x") }
     }
     return $result
 }
 
 # 在生成 ID 时使用新函数
-$MAC_MACHINE_ID = New-StandardMachineId
+$MAC_MACHINE_ID = New-StandardMachineId()
+Write-Host "生成的 macMachineId: $MAC_MACHINE_ID"
 $UUID = [System.Guid]::NewGuid().ToString()
 # 将 auth0|user_ 转换为字节数组的十六进制
 $prefixBytes = [System.Text.Encoding]::UTF8.GetBytes("auth0|user_")
