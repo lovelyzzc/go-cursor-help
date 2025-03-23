@@ -179,7 +179,7 @@ function New-StandardMachineId {
 }
 
 # 在生成 ID 时使用新函数
-$MAC_MACHINE_ID = New-StandardMachineId()
+$MAC_MACHINE_ID = New-StandardMachineId
 Write-Host "生成的 macMachineId: $MAC_MACHINE_ID"
 $UUID = [System.Guid]::NewGuid().ToString()
 # 将 auth0|user_ 转换为字节数组的十六进制
